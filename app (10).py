@@ -1,8 +1,9 @@
+
 import streamlit as st
 import random
 
 # Page Configuration
-st.set_page_config(page_title="Math Grand Prix 🏎️", page_icon="🏁", layout="centered")
+st.set_page_config(page_title="Math Grand Prix 🏎️️", page_icon="🏁", layout="centered")
 
 st.markdown("""
     <style>
@@ -33,7 +34,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
-# QUESTION GENERATOR ENGINE (Expanded Variety with Explanations)
+# QUESTION GENERATOR ENGINE
 # -----------------------------------------------------------------------------
 
 def generate_level_1():
@@ -50,7 +51,7 @@ def generate_level_1():
         q = f"Jenin downloaded {downloaded} songs in {mins} minutes. What is the download rate in songs per minute?"
         correct = f"{rate} songs/min"
         wrongs = [f"{rate + 10} songs/min", f"{max(10, rate - 15)} songs/min", f"{downloaded} songs/min"]
-        exp = f"**Step-by-Step Solution:**\nDivide total songs by total time: $\\frac{{{downloaded}\\text{{ songs}}}{{{mins}\\text{{ minutes}}}} = {rate}\\text{{ songs/min}}$."
+        exp = f"**Step-by-Step Solution:**\nDivide total songs by total time: $\\frac{{{downloaded}\\text{{ songs}}}}{{{mins}\\text{{ minutes}}}} = {rate}\\text{{ songs/min}}$."
 
     elif q_type == "gas_prop":
         price = random.choice([3.20, 3.50, 3.80, 4.10])
@@ -62,7 +63,6 @@ def generate_level_1():
         exp = f"**Step-by-Step Solution:**\nDivide total cost by gallons: $\\frac{{\\${total:.2f}}}{{{gals}}} = \\${price:.2f}\\text{{ per gallon}}$."
 
     elif q_type == "kfc_sides":
-        # Meal 1: bucket + 1 side = $19.88, Meal 2: bucket + 3 sides = $25.66 -> 2 sides = $5.78 -> $2.89/side
         q = "Meal 1 (Bucket + 1 side) costs $19.88. Meal 2 (Bucket + 3 sides) costs $25.66. What is the cost of 1 side?"
         correct = "$2.89"
         wrongs = ["$3.20", "$5.78", "$2.50"]
@@ -101,7 +101,7 @@ def generate_level_1():
         wrongs = ["4 ounces", "2 ounces", "6 ounces"]
         exp = f"**Step-by-Step Solution:**\nDivide total meat by sandwiches: $\\frac{{{weight}}}{{{sandwiches}}} = 3\\text{{ ounces per sandwich}}$."
 
-    else: # binge_watch
+    else:
         eps = random.randint(3, 7)
         mins = eps * 20
         q = f"Each episode of a show is 20 minutes long. How many minutes does it take to watch {eps} episodes?"
@@ -124,7 +124,6 @@ def generate_level_2():
     if q_type == "snow_model":
         b = random.randint(3, 6)
         x = random.randint(3, 6)
-        # y = b + 2x
         ans = b + 2 * x
         q = f"Snow height on a driveway is modeled by $y = {b} + 2x$, where $y$ is inches of snow and $x$ is hours after midnight. How many inches are on the ground at {x} AM?"
         correct = f"{ans} inches"
@@ -156,21 +155,18 @@ def generate_level_2():
         exp = f"**Step-by-Step Solution:**\nSubstitute $t = {hrs}$ into $F = 45 - 1.5t$:\n$$F = 45 - 1.5({hrs}) = 45 - {1.5*hrs} = {ans}\\text{{ gallons}}$$"
 
     elif q_type == "fast_charge":
-        start, rate = 20, 2
-        # 20 + 2m = 100 => 2m = 80 => m = 40
         q = "A tablet battery starts at 20% and charges at a constant rate of 2% per minute ($B = 20 + 2m$). How many minutes will it take to reach 100%?"
         correct = "40 minutes"
         wrongs = ["50 minutes", "30 minutes", "80 minutes"]
         exp = "**Step-by-Step Solution:**\nSet $B = 100$ and solve for $m$:\n$$100 = 20 + 2m \\implies 80 = 2m \\implies m = 40\\text{{ minutes}}$$"
 
     elif q_type == "lawn_care_table":
-        # Hours: 2 -> $90, 4 -> $160 => slope = (160-90)/(4-2) = 70/2 = $35/hr
         q = "A lawn service charges $90 for 2 hours of work and $160 for 4 hours of work. What is their hourly labor rate?"
         correct = "$35 / hour"
         wrongs = ["$45 / hour", "$30 / hour", "$70 / hour"]
         exp = "**Step-by-Step Solution:**\nFind slope $m = \\frac{C_2 - C_1}{h_2 - h_1} = \\frac{160 - 90}{4 - 2} = \\frac{70}{2} = \\$35\\text{ per hour}$."
 
-    else: # puppy_weight
+    else:
         w0 = 6
         rate = 1.8
         weeks = random.choice([4, 5, 10])
@@ -228,7 +224,7 @@ def generate_level_3():
         wrongs = ["15 minutes", "20 minutes", "50 minutes"]
         exp = "**Step-by-Step Solution:**\nSet the two equations equal to each other:\n$$100 + 15t = 250 + 10t \\implies 5t = 150 \\implies t = 30\\text{{ minutes}}$$"
 
-    else: # horiz_pts_j
+    else:
         j_val = random.choice([5, 7, 9, -4])
         q = f"A horizontal line passes through points $(-3, j)$ and $(6, {j_val})$. What is the value of $j$?"
         correct = str(j_val)
@@ -241,7 +237,6 @@ def generate_level_3():
 
 
 def get_next_question(score):
-    """Adaptive difficulty logic based on 15 total laps."""
     if score < 5:
         return generate_level_1()
     elif score < 10:
@@ -303,25 +298,21 @@ def submit_answer(selected_option):
 st.title("🏎️ Math Grand Prix: Linear Equations Rally")
 st.write("Answer linear equation problems correctly to push your race car 15 laps to victory!")
 
-# Victory Screen
 if st.session_state.game_over:
     st.balloons()
     st.success(f"🏆 **CHAMPION!** You crossed the finish line in {st.session_state.total_questions} total attempts!")
     
-    # Show last explanation
     if st.session_state.feedback:
-        st.markdown(f"### Final Question Breakdown")
+        st.markdown("### Final Question Breakdown")
         st.markdown(f"<div class='explanation-box'>{st.session_state.feedback['explanation']}</div>", unsafe_allow_html=True)
         
     st.button("Play Again 🔄", on_click=reset_game)
 
 else:
-    # Track Progress Bar & Visualizer
     progress = st.session_state.score / float(TARGET_LAPS)
     st.subheader(f"Progress: {st.session_state.score} / {TARGET_LAPS} Laps")
     st.progress(progress)
     
-    # ASCII Track
     car_pos = st.session_state.score
     track = ["➖"] * TARGET_LAPS
     if car_pos < TARGET_LAPS:
@@ -331,7 +322,6 @@ else:
     
     st.divider()
 
-    # Feedback and Explanation Box from Previous Question
     if st.session_state.feedback:
         fb = st.session_state.feedback
         if fb["status"] == "correct":
@@ -342,12 +332,10 @@ else:
         st.markdown(f"<div class='explanation-box'>{fb['explanation']}</div>", unsafe_allow_html=True)
         st.divider()
 
-    # Display Current Question
     q_data = st.session_state.current_q
     st.caption(f"Current Difficulty: **{q_data['level']}**")
     st.markdown(f"### Question: {q_data['question']}")
 
-    # Multiple Choice Buttons
     cols = st.columns(2)
     for idx, option in enumerate(q_data["options"]):
         with cols[idx % 2]:
