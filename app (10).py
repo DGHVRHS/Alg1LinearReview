@@ -306,8 +306,8 @@ if st.session_state.game_over:
         st.markdown("### Final Question Breakdown")
         # Displaying the explanation with LaTeX rendering enabled
     
-    with st.container(border=True):
-        st.markdown(fb["explanation"])
+   with st.container(border=True):
+    st.markdown(fb["explanation"])
         
         
     st.button("Play Again 🔄", on_click=reset_game)
